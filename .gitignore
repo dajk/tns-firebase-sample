@@ -1,0 +1,7 @@
+lib/
+node_modules/
+platforms/
+tmp/
+.SD_Store
+use-case -V1bis.txt
+V1_data_sample.json
