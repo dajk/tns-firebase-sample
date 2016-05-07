@@ -17,7 +17,7 @@ exports.loaded = function(args) {
 
   page.bindingContext = user;
 
-  user.init()
+  user.init();
 };
 
 exports.signIn = function() {

@@ -6,6 +6,7 @@ var TopicListViewModel = require('../../shared/view-models/topic-list-view-model
 var socialShare = require('nativescript-social-share');
 var swipeDelete = require('../../shared/utils/ios-swipe-delete');
 var frameModule = require('ui/frame');
+
 var page;
 
 var UserViewModel = require('../../shared/view-models/user-view-model');
@@ -23,6 +24,7 @@ exports.loaded = function(args) {
   if (page.ios) {
     var listView = viewModule.getViewById(page, 'topicList');
     swipeDelete.enable(listView, function(index) {
+      console.log(index);
       topicList.delete(index);
     });
     var navigationBar = frameModule.topmost().ios.controller.navigationBar;
@@ -77,8 +79,7 @@ exports.share = function() {
 
 exports.delete = function(args) {
   var item = args.view.bindingContext;
-  // var index = topicList.indexOf(item);
-  topicList.delete(item.id);
+  topicList.delete(item);
 };
 
 exports.logout = function() {
@@ -87,7 +88,7 @@ exports.logout = function() {
   });
 };
 
-exports.onTap = function(args) {
+exports.openTopic = function(args) {
   frameModule.topmost().navigate({
     moduleName: 'views/ideas/ideas',
     context: args.view.bindingContext

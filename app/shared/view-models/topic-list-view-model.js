@@ -19,21 +19,18 @@ function TopicListViewModel(items) {
 
   viewModel.load = function () {
     var onChildEvent = function(result) {
-      var matches = [];
+      var index = viewModel.indexOf(result)
       
-      if (result.type === 'ChildAdded') {            
-        // if(result.value.GUserID === config.uid){
+      if (result.type === 'ChildAdded' && index === -1) {
+        // if(result.value.Owner === config.uid){
           viewModel.push({
             title: result.value.Title,
+            owner: result.value.Owner,
             id: result.key
           });
         // }
-      } else if (result.type === 'ChildRemoved') {
-        matches.push(result);
-        matches.forEach(function(match) {
-          var index = viewModel.indexOf(match);
-          viewModel.splice(index, 1);                                     
-        });
+      } else if (result.type === 'ChildRemoved' && index !== -1) {
+          viewModel.splice(index, 1);
       }
 
     };
@@ -54,7 +51,10 @@ function TopicListViewModel(items) {
   viewModel.add = function(topic) {
     return firebase.push('/GTopics', {
       'Title': topic,
-      'Owner': config.uid
+      'Owner': {
+        username: config.username,
+        id: config.uid
+      }
     }).then(function(val) {
       firebase.setValue('/GTopics/' + val.key + '/Members/' + config.uid, {
         'GUserID': config.uid,
@@ -63,15 +63,14 @@ function TopicListViewModel(items) {
 
       firebase.setValue('/GUsers/' + config.uid + '/UTopics/' + val.key, {
         'GTopicID': val.key,
-        'TopicTitle': topic
+        'Title': topic
       });
     });
   };
 
-  viewModel.delete = function(id) {
-    // var id = viewModel.getItem(index).id;
-    return firebase.remove('/GTopics/' + id + '').then(function() {
-      firebase.remove('/GUsers/' + config.uid + '/UTopics/' + id);
+  viewModel.delete = function(topic) {
+    return firebase.remove('/GTopics/' + topic.id).then(function() {
+      firebase.remove('/GUsers/' + topic.owner.id + '/UTopics/' + topic.id);
     });
   };
 

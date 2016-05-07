@@ -1,6 +1,6 @@
 <Page loaded="loaded">
   <Page.actionBar>
-    <ActionBar title="Ideas">
+    <ActionBar title="{{ topic.title }}">
       <ActionBar.actionItems>
         <ActionItem text="Share" tap="share" ios.position="right" />
         <ActionItem text="Logout" tap="logout" ios.position="right" />
@@ -8,13 +8,14 @@
     </ActionBar>
   </Page.actionBar>
   <GridLayout rows="auto, *" columns="2*, *">
-    <TextField id="idea" text="{{ idea }}" hint="Enter a idea item" row="0" col="0" />
+    <TextField id="ideaTitle" text="{{ ideaTitle }}" hint="Enter a idea item" row="0" col="0" />
     <Button text="Add" tap="add" row="0" col="1" />
     <ListView items="{{ ideaList }}" id="ideaList" row="1" colSpan="2">
       <ListView.itemTemplate>
-        <GridLayout columns="*, auto" tap="onTap">
+        <GridLayout columns="*, *, auto" tap="onTap">
           <Label text="{{ title }}"/>
-          <Image src="res://ic_menu_delete" ios:visibility="collapsed" col="1" tap="delete" />
+          <Label text="{{ owner.username }}" col="1"/>
+          <Image src="res://ic_menu_delete" ios:visibility="collapsed" col="2" tap="delete" />
         </GridLayout>
       </ListView.itemTemplate>
     </ListView>

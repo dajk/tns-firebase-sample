@@ -12,7 +12,7 @@
     <Button text="Add" tap="add" row="0" col="1" />
     <ListView items="{{ topicList }}" id="topicList" row="1" colSpan="2">
       <ListView.itemTemplate>
-        <GridLayout columns="*, auto" tap="onTap">
+        <GridLayout columns="*, auto" tap="openTopic">
           <Label text="{{ title }}"/>
           <Image src="res://ic_menu_delete" ios:visibility="collapsed" col="1" tap="delete" />
         </GridLayout>

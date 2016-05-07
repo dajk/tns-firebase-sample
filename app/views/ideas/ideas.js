@@ -8,12 +8,14 @@ var observableArrayModule = require('data/observable-array');
 
 var IdeaListViewModel = require('../../shared/view-models/idea-list-view-model');
 var frameModule = require('ui/frame');
+
 var page;
 
 var ideaList = new IdeaListViewModel([]);
 var pageData = new observableModule.Observable({
   ideaList: ideaList,
-  idea: '',
+  ideaTitle: '',
+  ideaOwner: '',
   topic: ''
 });
 
@@ -36,18 +38,20 @@ exports.loaded = function(args) {
 
   pageData.set('topic', page.navigationContext);
 
-  page.bindingContext = pageData;
-
-  ideaList.empty();
-  ideaList.load(pageData.get('topic'));
+  ideaList.cleanup();
+  pageData.set('isLoading', true);
+  ideaList.load(pageData.get('topic').id).then(function() {
+    pageData.set('isLoading', false);
+    page.bindingContext = pageData;
+  });
 };
 
 exports.add = function() {
   // Check for empty submissions
-  if (pageData.get('idea').trim() !== '') {
+  if (pageData.get('ideaTitle').trim() !== '') {
     // Dismiss the keyboard
-    viewModule.getViewById(page, 'idea').dismissSoftInput();
-    ideaList.add(pageData.get('idea'), pageData.get('topic'))
+    viewModule.getViewById(page, 'ideaTitle').dismissSoftInput();
+    ideaList.add(pageData.get('ideaTitle'), pageData.get('topic'))
       .catch(function() {
         dialogsModule.alert({
           message: 'An error occurred while adding an item to your list.',
@@ -55,7 +59,7 @@ exports.add = function() {
         });
       });
     // Empty the input field
-    pageData.set('idea', '');
+    pageData.set('ideaTitle', '');
   } else {
     dialogsModule.alert({
       message: 'Enter a idea item',
@@ -66,7 +70,6 @@ exports.add = function() {
 
 exports.delete = function(args) {
   var item = args.view.bindingContext;
-  // var index = topicList.indexOf(item);
   ideaList.delete(pageData.get('topic').id, item.id);
 };
 

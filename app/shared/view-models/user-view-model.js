@@ -8,7 +8,6 @@ function User(info) {
 
   // You can add properties to observables on creation
   var viewModel = new observableModule.Observable({
-    username: info.username,
     email: info.email || 'steven@mytest.com',
     password: info.password || 'steven'
   });
@@ -30,7 +29,19 @@ function User(info) {
       password: viewModel.get('password')
     }).then(function (response) {
       config.uid = response.uid;
+      var onQueryEvent = function(result) {
+        config.username = result.value.username
+      };
+      firebase.query(onQueryEvent, '/GUsers/' + response.uid, {
+        singleEvent: true,
+        orderBy: {
+          type: firebase.QueryOrderByType.CHILD,
+          value: 'username'
+        }
+      });
       return response;
+    }, function (error) {
+      console.error(error);
     });
   };
 

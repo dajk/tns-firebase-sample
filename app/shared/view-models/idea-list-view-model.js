@@ -17,35 +17,31 @@ function IdeaListViewModel(items) {
   var viewModel = new observableArrayModule.ObservableArray(items);
   viewModel.indexOf = indexOf;
 
-  viewModel.load = function (topic) {
+  viewModel.load = function (topicId) {
     var onChildEvent = function(result) {
-      var matches = [];
-      
-      if (result.type === 'ChildAdded') {            
-        // if(result.value.GUserID === config.uid){
+      var index = viewModel.indexOf(result);
+      if (result.type === 'ChildAdded' && index === -1) {
+        // if(result.value.Owner === config.uid){
           viewModel.push({
             title: result.value.Title,
+            owner: result.value.Owner,
             id: result.key
           });
         // }
-      } else if (result.type === 'ChildRemoved') {
-        matches.push(result);
-        matches.forEach(function(match) {
-          var index = viewModel.indexOf(match);
-          viewModel.splice(index, 1);                                     
-        });
+      } else if (result.type === 'ChildRemoved' && index !== -1) {
+        viewModel.splice(index, 1);
       }
 
     };
    
-    return firebase.addChildEventListener(onChildEvent, '/GTopics/' + topic.id + '/TopicIdeas').then(function () {
+    return firebase.addChildEventListener(onChildEvent, '/GTopics/' + topicId + '/TopicIdeas').then(function () {
       console.log('firebase.addChildEventListener added');
     }, function (error) {
       console.log('firebase.addChildEventListener error: ' + error);
     });
   };
 
-  viewModel.empty = function() {
+  viewModel.cleanup = function() {
     while (viewModel.length) {
       viewModel.pop();
     }
@@ -54,7 +50,10 @@ function IdeaListViewModel(items) {
   viewModel.add = function(idea, topic) {
     return firebase.push('/GTopics/' + topic.id + '/TopicIdeas', {
       'Title': idea,
-      'Owner': config.uid
+      'Owner': {
+        username: config.username,
+        id: config.uid
+      }
     }).then(function(val) {
       firebase.update('/GTopics/' + topic.id + '/Members/' + config.uid, {
         'GUserID': config.uid
@@ -67,8 +66,6 @@ function IdeaListViewModel(items) {
   };
 
   viewModel.delete = function(topicId, ideaId) {
-    console.log(topicId, ideaId);
-    // var id = viewModel.getItem(index).id;
     return firebase.remove('/GTopics/' + topicId + '/TopicIdeas/' + ideaId).then(function() {
       firebase.remove('/GTopics/' + topicId + '/Members/' + config.uid + '/Ideas/' + ideaId);
     });
