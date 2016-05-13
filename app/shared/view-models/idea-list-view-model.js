@@ -20,14 +20,14 @@ function IdeaListViewModel(items) {
   viewModel.load = function (topicId) {
     var onChildEvent = function(result) {
       var index = viewModel.indexOf(result);
+      
       if (result.type === 'ChildAdded' && index === -1) {
-        // if(result.value.Owner === config.uid){
-          viewModel.push({
-            title: result.value.Title,
-            owner: result.value.Owner,
-            id: result.key
-          });
-        // }
+        viewModel.push({
+          title: result.value.Title,
+          owner: result.value.Owner,
+          id: result.key,
+          isOwner: result.value.Owner.id === config.uid
+        });
       } else if (result.type === 'ChildRemoved' && index !== -1) {
         viewModel.splice(index, 1);
       }

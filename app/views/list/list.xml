@@ -1,23 +1,47 @@
-<Page loaded="loaded">
+<Page loaded="loaded" xmlns="http://www.nativescript.org/tns.xsd" xmlns:lv="nativescript-telerik-ui/listview">
+
   <Page.actionBar>
     <ActionBar title="Topics">
       <ActionBar.actionItems>
-        <ActionItem text="Share" tap="share" ios.position="right" />
         <ActionItem text="Logout" tap="logout" ios.position="right" />
       </ActionBar.actionItems>
     </ActionBar>
   </Page.actionBar>
-  <GridLayout rows="auto, *" columns="2*, *">
-    <TextField id="topic" text="{{ topic }}" hint="Enter a topic item" row="0" col="0" />
-    <Button text="Add" tap="add" row="0" col="1" />
-    <ListView items="{{ topicList }}" id="topicList" row="1" colSpan="2">
-      <ListView.itemTemplate>
-        <GridLayout columns="*, auto" tap="openTopic">
+
+  <GridLayout rows="auto, *" cssClass="full-content">
+    <GridLayout columns="2*, *">
+      <TextField id="topic" text="{{ topic }}" hint="Enter a topic item" row="0" col="0" />
+      <Button text="Add" tap="add" row="0" col="1" />
+    </GridLayout>
+
+    <lv:RadListView row="1" items="{{ topicList }}" id="topicList" itemSwipe="true" cssClass="rad-list">
+
+      <lv:RadListView.listViewLayout>
+        <lv:ListViewLinearLayout scrollDirection="Vertical" />
+      </lv:RadListView.listViewLayout>
+
+      <lv:RadListView.itemTemplate>
+        <GridLayout columns="*, *" cssClass="item">
           <Label text="{{ title }}"/>
-          <Image src="res://ic_menu_delete" ios:visibility="collapsed" col="1" tap="delete" />
+          <Label text="{{ owner.username }}" col="1"/>
         </GridLayout>
-      </ListView.itemTemplate>
-    </ListView>
-    <ActivityIndicator busy="{{ isLoading }}" rowSpan="2" colSpan="2" />
+      </lv:RadListView.itemTemplate>
+
+      <lv:RadListView.itemSwipeTemplate>
+        <GridLayout columns="auto, *, auto">
+          <StackLayout col="0" backgroundColor="green" tap="openTopic">
+            <Label text="Edit" color="white" />
+          </StackLayout>
+          <StackLayout col="2" backgroundColor="red" tap="delete">
+            <Label text="Delete" color="white" />
+          </StackLayout>
+        </GridLayout>
+      </lv:RadListView.itemSwipeTemplate>
+
+    </lv:RadListView>
+
+    <ActivityIndicator busy="{{ isLoading }}" rowSpan="2" colSpan="2"/>
+
   </GridLayout>
+
 </Page>

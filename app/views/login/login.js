@@ -34,3 +34,4 @@ exports.signIn = function() {
 exports.register = function() {
   frameModule.topmost().navigate('views/register/register');
 };
+

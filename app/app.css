@@ -1,8 +1,9 @@
 @import { url('~/platform.css') };
 
 Page {
-  background-color: white;
   font-size: 17;
+  background-image: url('~/shared/images/flowers_bg.jpg');
+  background-size: cover;
 }
 TextField {
   margin: 10;
@@ -17,4 +18,16 @@ Image {
 Button {
   margin: 10;
   padding: 10;
+}
+ActivityIndicator {
+  width: 50;
+}
+.item {
+  background-color: #eee;
+}
+.full-content {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+.rad-list {
+  background-color: transparent;
 }

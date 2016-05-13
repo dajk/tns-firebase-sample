@@ -17,10 +17,10 @@
 	"homepage": "https://github.com/dajk/tns-firebase-sample",
 	"nativescript": {
 		"id": "org.nativescript.topics",
-		"tns-ios": {
+		"tns-android": {
 			"version": "2.0.0"
 		},
-		"tns-android": {
+		"tns-ios": {
 			"version": "2.0.0"
 		}
 	},
@@ -28,6 +28,7 @@
 		"email-validator": "1.0.4",
 		"nativescript-plugin-firebase": "2.1.7",
 		"nativescript-social-share": "1.1.3",
+		"nativescript-telerik-ui": "1.1.1",
 		"tns-core-modules": "2.0.0"
 	},
 	"devDependencies": {

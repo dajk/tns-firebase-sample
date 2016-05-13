@@ -1,4 +1,5 @@
-<Page loaded="loaded">
+<Page loaded="loaded" xmlns="http://www.nativescript.org/tns.xsd" xmlns:lv="nativescript-telerik-ui/listview">
+
   <Page.actionBar>
     <ActionBar title="{{ topic.title }}">
       <ActionBar.actionItems>
@@ -7,18 +8,40 @@
       </ActionBar.actionItems>
     </ActionBar>
   </Page.actionBar>
-  <GridLayout rows="auto, *" columns="2*, *">
-    <TextField id="ideaTitle" text="{{ ideaTitle }}" hint="Enter a idea item" row="0" col="0" />
-    <Button text="Add" tap="add" row="0" col="1" />
-    <ListView items="{{ ideaList }}" id="ideaList" row="1" colSpan="2">
-      <ListView.itemTemplate>
-        <GridLayout columns="*, *, auto" tap="onTap">
+
+  <GridLayout rows="auto, *" cssClass="full-content">
+    <GridLayout columns="2*, *">
+      <TextField id="ideaTitle" text="{{ ideaTitle }}" hint="Enter a idea item" row="0" col="0" />
+      <Button text="Add" tap="add" row="0" col="1" />
+    </GridLayout>
+
+    <lv:RadListView items="{{ ideaList }}" id="ideaList" row="1" itemSwipe="true" cssClass="rad-list">
+
+      <lv:RadListView.listViewLayout>
+        <lv:ListViewLinearLayout scrollDirection="Vertical" />
+      </lv:RadListView.listViewLayout>
+
+      <lv:RadListView.itemTemplate>
+        <GridLayout columns="*, *" cssClass="item">
           <Label text="{{ title }}"/>
           <Label text="{{ owner.username }}" col="1"/>
-          <Image src="res://ic_menu_delete" ios:visibility="collapsed" col="2" tap="delete" />
         </GridLayout>
-      </ListView.itemTemplate>
-    </ListView>
+      </lv:RadListView.itemTemplate>
+
+      <lv:RadListView.itemSwipeTemplate>
+        <GridLayout columns="auto, *, auto">
+          <StackLayout col="0" backgroundColor="green">
+            <Label text="Edit" color="white" />
+          </StackLayout>
+          <StackLayout col="2" backgroundColor="red" tap="delete">
+            <Label text="Delete" color="white" />
+          </StackLayout>
+        </GridLayout>
+      </lv:RadListView.itemSwipeTemplate>
+    </lv:RadListView>
+    
     <ActivityIndicator busy="{{ isLoading }}" rowSpan="2" colSpan="2" />
+    
   </GridLayout>
+
 </Page>

@@ -23,17 +23,13 @@ exports.loaded = function(args) {
   page = args.object;
 
   if (page.ios) {
-    var listView = viewModule.getViewById(page, 'ideaList');
-    swipeDelete.enable(listView, function(index) {
-      ideaList.delete(index);
-    });
     var navigationBar = frameModule.topmost().ios.controller.navigationBar;
     navigationBar.barTintColor = UIColor.colorWithRedGreenBlueAlpha(0.011, 0.278, 0.576, 1);
     navigationBar.titleTextAttributes = new NSDictionary([UIColor.whiteColor()], [NSForegroundColorAttributeName]);
     navigationBar.barStyle = 1;
     navigationBar.tintColor = UIColor.whiteColor();
 
-    frameModule.topmost().ios.navBarVisibility = 'never';
+    frameModule.topmost().ios.navBarVisibility = 'auto';
   }
 
   pageData.set('topic', page.navigationContext);
@@ -77,4 +73,14 @@ exports.logout = function() {
   user.logout().then(function() {
     frameModule.topmost().navigate('views/login/login');
   });
+};
+
+exports.share = function() {
+  var list = [];
+  var finalList = '';
+  for (var i = 0, size = topicList.length; i < size ; i++) {
+    list.push(topicList.getItem(i).name);
+  }
+  var listString = list.join(', ').trim();
+  socialShare.shareText(listString);
 };
