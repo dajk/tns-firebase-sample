@@ -17,7 +17,7 @@ function IdeaListViewModel(items) {
   var viewModel = new observableArrayModule.ObservableArray(items);
   viewModel.indexOf = indexOf;
 
-  viewModel.load = function (topicId) {
+  viewModel.load = function (topic) {
     var onChildEvent = function(result) {
       var index = viewModel.indexOf(result);
       
@@ -26,6 +26,7 @@ function IdeaListViewModel(items) {
           title: result.value.Title,
           owner: result.value.Owner,
           id: result.key,
+          topic: topic,
           isOwner: result.value.Owner.id === config.uid
         });
       } else if (result.type === 'ChildRemoved' && index !== -1) {
@@ -34,7 +35,7 @@ function IdeaListViewModel(items) {
 
     };
    
-    return firebase.addChildEventListener(onChildEvent, '/GTopics/' + topicId + '/TopicIdeas').then(function () {
+    return firebase.addChildEventListener(onChildEvent, '/GTopics/' + topic.id + '/TopicIdeas').then(function () {
       console.log('firebase.addChildEventListener added');
     }, function (error) {
       console.log('firebase.addChildEventListener error: ' + error);
@@ -61,6 +62,16 @@ function IdeaListViewModel(items) {
       firebase.setValue('/GTopics/' + topic.id + '/Members/' + config.uid + '/Ideas/' + val.key, {
         'IdeaID': val.key,
         'Title': idea
+      });
+    });
+  };
+
+  viewModel.update = function(idea) {
+    return firebase.update('/GTopics/' + idea.topic.id + '/TopicIdeas/' + idea.id, {
+      Title: idea.title
+    }).then(function() {
+      firebase.update('/GUsers/' + idea.topic.owner.id + '/Members/' + config.uid + '/Ideas/' + idea.id, {
+        Title: idea.title
       });
     });
   };

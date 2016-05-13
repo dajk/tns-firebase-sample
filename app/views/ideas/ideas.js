@@ -36,7 +36,7 @@ exports.loaded = function(args) {
 
   ideaList.cleanup();
   pageData.set('isLoading', true);
-  ideaList.load(pageData.get('topic').id).then(function() {
+  ideaList.load(pageData.get('topic')).then(function() {
     pageData.set('isLoading', false);
     page.bindingContext = pageData;
   });
@@ -84,3 +84,11 @@ exports.share = function() {
   var listString = list.join(', ').trim();
   socialShare.shareText(listString);
 };
+
+exports.edit = function(args) {
+  frameModule.topmost().navigate({
+    moduleName: 'views/ideas/update-idea',
+    context: args.view.bindingContext
+  });
+};
+

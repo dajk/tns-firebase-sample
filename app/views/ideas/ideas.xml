@@ -30,7 +30,7 @@
 
       <lv:RadListView.itemSwipeTemplate>
         <GridLayout columns="auto, *, auto">
-          <StackLayout col="0" backgroundColor="green">
+          <StackLayout col="0" backgroundColor="green" tap="edit">
             <Label text="Edit" color="white" />
           </StackLayout>
           <StackLayout col="2" backgroundColor="red" tap="delete">

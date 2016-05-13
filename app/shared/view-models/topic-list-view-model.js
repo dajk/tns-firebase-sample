@@ -67,6 +67,16 @@ function TopicListViewModel(items) {
     });
   };
 
+  viewModel.update = function(topic) {
+    return firebase.update('/GTopics/' + topic.id, {
+      Title: topic.title
+    }).then(function() {
+      firebase.update('/GUsers/' + topic.owner.id + '/UTopics/' + topic.id, {
+        Title: topic.title
+      });
+    });
+  };
+
   viewModel.delete = function(topic) {
     return firebase.remove('/GTopics/' + topic.id).then(function() {
       firebase.remove('/GUsers/' + topic.owner.id + '/UTopics/' + topic.id);

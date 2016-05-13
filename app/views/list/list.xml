@@ -14,7 +14,7 @@
       <Button text="Add" tap="add" row="0" col="1" />
     </GridLayout>
 
-    <lv:RadListView row="1" items="{{ topicList }}" id="topicList" itemSwipe="true" cssClass="rad-list">
+    <lv:RadListView row="1" items="{{ topicList }}" id="topicList" itemSwipe="true" cssClass="rad-list" itemTap="openTopic">
 
       <lv:RadListView.listViewLayout>
         <lv:ListViewLinearLayout scrollDirection="Vertical" />
@@ -29,7 +29,7 @@
 
       <lv:RadListView.itemSwipeTemplate>
         <GridLayout columns="auto, *, auto">
-          <StackLayout col="0" backgroundColor="green" tap="openTopic">
+          <StackLayout col="0" backgroundColor="green" tap="edit">
             <Label text="Edit" color="white" />
           </StackLayout>
           <StackLayout col="2" backgroundColor="red" tap="delete">

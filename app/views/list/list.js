@@ -29,7 +29,7 @@ exports.loaded = function(args) {
     navigationBar.barStyle = 1;
     navigationBar.tintColor = UIColor.whiteColor();
 
-    frameModule.topmost().ios.navBarVisibility = 'auto';
+    frameModule.topmost().ios.navBarVisibility = '';
   }
 
   page.bindingContext = pageData;
@@ -38,9 +38,7 @@ exports.loaded = function(args) {
 
   pageData.set('isLoading', true);
   topicList.load().then(function() {
-    setTimeout(function() {
-      pageData.set('isLoading', false);
-    }, 2000);
+    pageData.set('isLoading', false);
   });
 };
 
@@ -80,6 +78,13 @@ exports.logout = function() {
 exports.openTopic = function(args) {
   frameModule.topmost().navigate({
     moduleName: 'views/ideas/ideas',
+    context: args.object.bindingContext
+  });
+};
+
+exports.edit = function(args) {
+  frameModule.topmost().navigate({
+    moduleName: 'views/list/update-topic',
     context: args.view.bindingContext
   });
 };

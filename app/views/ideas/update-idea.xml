@@ -1,0 +1,18 @@
+<Page loaded="loaded">
+
+  <Page.actionBar>
+    <ActionBar title="Edit idea">
+      <ActionBar.actionItems>
+        <ActionItem text="Logout" tap="logout" ios.position="right" />
+      </ActionBar.actionItems>
+    </ActionBar>
+  </Page.actionBar>
+
+  <GridLayout rows="auto, *" cssClass="full-content">
+    <GridLayout columns="2*, *">
+      <TextField id="idea" text="{{ title }}" hint="Update a idea item" row="0" col="0" />
+      <Button text="Update" tap="update" row="0" col="1" />
+    </GridLayout>
+  </GridLayout>
+
+</Page>
