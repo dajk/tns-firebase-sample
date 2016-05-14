@@ -1,3 +1,4 @@
+var dialogsModule = require('ui/dialogs');
 var observableModule = require('data/observable');
 var viewModule = require('ui/core/view');
 var TopicListViewModel = require('../../shared/view-models/topic-list-view-model');
@@ -21,7 +22,12 @@ exports.loaded = function(args) {
 
 exports.update = function(args) {
   var item = args.object.bindingContext;
-  topicList.update(item);
+  topicList.update(item).then(function() {
+    dialogsModule.alert({
+      message: 'Topic is updated!',
+      okButtonText: 'OK'
+    });
+  });
 };
 
 exports.logout = function() {

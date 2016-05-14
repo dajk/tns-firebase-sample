@@ -1,3 +1,4 @@
+var dialogsModule = require('ui/dialogs');
 var observableModule = require('data/observable');
 var viewModule = require('ui/core/view');
 var IdeaListViewModel = require('../../shared/view-models/idea-list-view-model');
@@ -21,8 +22,12 @@ exports.loaded = function(args) {
 
 exports.update = function(args) {
   var item = args.object.bindingContext;
-  console.dir(item);
-  ideaList.update(item);
+  ideaList.update(item).then(function() {
+    dialogsModule.alert({
+      message: 'Idea is updated!',
+      okButtonText: 'OK'
+    });
+  });
 };
 
 exports.logout = function() {

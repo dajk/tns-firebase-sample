@@ -11,7 +11,7 @@
 
   <GridLayout rows="auto, *" cssClass="full-content">
     <GridLayout columns="2*, *">
-      <TextField id="ideaTitle" text="{{ ideaTitle }}" hint="Enter a idea item" row="0" col="0" />
+      <TextField id="ideaTitle" text="{{ title }}" hint="Enter a idea item" row="0" col="0" />
       <Button text="Add" tap="add" row="0" col="1" />
     </GridLayout>
 
@@ -30,10 +30,10 @@
 
       <lv:RadListView.itemSwipeTemplate>
         <GridLayout columns="auto, *, auto">
-          <StackLayout col="0" backgroundColor="green" tap="edit">
+          <StackLayout col="0" backgroundColor="{{ isOwner ? 'green' : 'silver' }}" tap="edit">
             <Label text="Edit" color="white" />
           </StackLayout>
-          <StackLayout col="2" backgroundColor="red" tap="delete">
+          <StackLayout col="2" backgroundColor="{{ isOwner ? 'red' : 'silver' }}" tap="delete">
             <Label text="Delete" color="white" />
           </StackLayout>
         </GridLayout>

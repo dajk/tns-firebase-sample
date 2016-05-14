@@ -66,7 +66,9 @@ exports.add = function() {
 
 exports.delete = function(args) {
   var item = args.view.bindingContext;
-  topicList.delete(item);
+  if (item.isOwner) {
+    topicList.delete(item);
+  }
 };
 
 exports.logout = function() {
@@ -83,8 +85,11 @@ exports.openTopic = function(args) {
 };
 
 exports.edit = function(args) {
-  frameModule.topmost().navigate({
-    moduleName: 'views/list/update-topic',
-    context: args.view.bindingContext
-  });
+  var item = args.view.bindingContext
+  if (item.isOwner) {
+    frameModule.topmost().navigate({
+      moduleName: 'views/list/update-topic',
+      context: item
+    });
+  }
 };

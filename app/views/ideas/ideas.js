@@ -14,7 +14,7 @@ var page;
 var ideaList = new IdeaListViewModel([]);
 var pageData = new observableModule.Observable({
   ideaList: ideaList,
-  ideaTitle: '',
+  title: '',
   ideaOwner: '',
   topic: ''
 });
@@ -44,10 +44,10 @@ exports.loaded = function(args) {
 
 exports.add = function() {
   // Check for empty submissions
-  if (pageData.get('ideaTitle').trim() !== '') {
+  if (pageData.get('title').trim() !== '') {
     // Dismiss the keyboard
-    viewModule.getViewById(page, 'ideaTitle').dismissSoftInput();
-    ideaList.add(pageData.get('ideaTitle'), pageData.get('topic'))
+    viewModule.getViewById(page, 'title').dismissSoftInput();
+    ideaList.add(pageData.get('title'), pageData.get('topic'))
       .catch(function() {
         dialogsModule.alert({
           message: 'An error occurred while adding an item to your list.',
@@ -55,7 +55,7 @@ exports.add = function() {
         });
       });
     // Empty the input field
-    pageData.set('ideaTitle', '');
+    pageData.set('title', '');
   } else {
     dialogsModule.alert({
       message: 'Enter a idea item',
@@ -66,7 +66,9 @@ exports.add = function() {
 
 exports.delete = function(args) {
   var item = args.view.bindingContext;
-  ideaList.delete(pageData.get('topic').id, item.id);
+  if (item.isOwner) {
+    ideaList.delete(pageData.get('topic').id, item.id);
+  }
 };
 
 exports.logout = function() {
@@ -86,9 +88,11 @@ exports.share = function() {
 };
 
 exports.edit = function(args) {
-  frameModule.topmost().navigate({
-    moduleName: 'views/ideas/update-idea',
-    context: args.view.bindingContext
-  });
+  var item = args.view.bindingContext;
+  if (item.isOwner) {
+    frameModule.topmost().navigate({
+      moduleName: 'views/ideas/update-idea',
+      context: item
+    });
+  }
 };
-
