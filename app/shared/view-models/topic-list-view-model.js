@@ -20,16 +20,19 @@ function TopicListViewModel(items) {
   viewModel.load = function () {
     var onChildEvent = function(result) {
       var index = viewModel.indexOf(result)
-      
+      var obj = {
+        title: result.value.Title,
+        owner: result.value.Owner,
+        id: result.key,
+        isOwner: result.value.Owner.id === config.uid
+      };
+
       if (result.type === 'ChildAdded' && index === -1) {
-        viewModel.push({
-          title: result.value.Title,
-          owner: result.value.Owner,
-          id: result.key,
-          isOwner: result.value.Owner.id === config.uid
-        });
+        viewModel.push(obj);
       } else if (result.type === 'ChildRemoved' && index !== -1) {
         viewModel.splice(index, 1);
+      } else if (result.type === 'ChildChanged' && index !== -1) {
+        viewModel.setItem(index, obj);
       }
 
     };

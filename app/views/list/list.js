@@ -87,9 +87,17 @@ exports.openTopic = function(args) {
 exports.edit = function(args) {
   var item = args.view.bindingContext
   if (item.isOwner) {
-    frameModule.topmost().navigate({
-      moduleName: 'views/list/update-topic',
-      context: item
+    dialogsModule.prompt({
+      title: item.title,
+      okButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      defaultText: item.title,
+      inputType: dialogsModule.inputType.text
+    }).then(function(res) {
+      if (res.result) {
+        item.title = res.text;
+        topicList.update(item);
+      }
     });
   }
 };

@@ -24,10 +24,21 @@ ActivityIndicator {
 }
 .item {
   background-color: #eee;
+  padding: 10 0;
+}
+.owner {
+  color: #6699ff;
+}
+.title {
+  color: #222;
 }
 .full-content {
   background-color: rgba(255, 255, 255, 0.95);
 }
 .rad-list {
   background-color: transparent;
+}
+.swipe StackLayout {
+  padding: 10 0;
+  width: 75;
 }

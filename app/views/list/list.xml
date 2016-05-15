@@ -22,13 +22,13 @@
 
       <lv:RadListView.itemTemplate>
         <GridLayout columns="*, *" cssClass="item">
-          <Label text="{{ title }}"/>
-          <Label text="{{ owner.username }}" col="1"/>
+          <Label text="{{ title }}" cssClass="title"/>
+          <Label text="{{ owner.username }}" col="1" cssClass="owner"/>
         </GridLayout>
       </lv:RadListView.itemTemplate>
 
       <lv:RadListView.itemSwipeTemplate>
-        <GridLayout columns="auto, *, auto">
+        <GridLayout columns="auto, *, auto" cssClass="swipe">
           <StackLayout col="0" backgroundColor="{{ isOwner ? 'green' : 'silver' }}" tap="edit">
             <Label text="Edit" color="white" />
           </StackLayout>

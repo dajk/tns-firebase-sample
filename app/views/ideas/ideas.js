@@ -90,9 +90,17 @@ exports.share = function() {
 exports.edit = function(args) {
   var item = args.view.bindingContext;
   if (item.isOwner) {
-    frameModule.topmost().navigate({
-      moduleName: 'views/ideas/update-idea',
-      context: item
+    dialogsModule.prompt({
+      title: item.title,
+      okButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      defaultText: item.title,
+      inputType: dialogsModule.inputType.text
+    }).then(function(res) {
+      if (res.result) {
+        item.title = res.text;
+        ideaList.update(item);
+      }
     });
   }
 };
